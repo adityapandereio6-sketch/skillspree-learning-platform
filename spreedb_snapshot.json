@@ -1,0 +1,7 @@
+{
+    "db": {
+        "weapon": "sword",
+        "armor": "shield"
+    },
+    "ml_transitions": {}
+}
