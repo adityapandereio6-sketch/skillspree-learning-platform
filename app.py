@@ -232,13 +232,13 @@ st.markdown(
     <div class="hero">
 
         <div class="hero-title">
-            SPREEDB DATABASE CONTROL
+            NEXA TRIAGE OPERATIONAL CONTROL
         </div>
 
         <div class="hero-subtitle">
-            In-Memory Key-Value Engine •
-            Nested Transactions •
-            Markov Chain Predictive Cache
+            Deterministic RAG Routing •
+            Local Llama 3 Grounding •
+            Regex Risk Engine
         </div>
 
     </div>
