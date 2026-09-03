@@ -1,7 +1,12 @@
-SpreeDB ⚡
 # ⚡ SpreeDB
 
 > A Python-based in-memory key-value database featuring nested transactions, O(1) value counting, Markov-chain predictive caching, JSON persistence, and multithreaded TCP client-server support.
+
+---
+
+## 🚀 Live Demo
+
+👉 [Open SkillSpree Dashboard](https://skillspree-learning-platform-de67sz2ggmvvhdrdkttfxm.streamlit.app/)
 
 ---
 
@@ -42,7 +47,6 @@ SET name Alice
 GET name
 
 Output:
-
 Alice
 ⚡ O(1) COUNT Queries
 
@@ -58,7 +62,6 @@ SET bob developer
 COUNT developer
 
 Output:
-
 2
 
 Internally:
@@ -67,6 +70,8 @@ value_counts[value] = frequency
 🔄 Nested Transactions
 
 SpreeDB supports multiple levels of transactions.
+
+Example:
 
 BEGIN
 SET a 10
@@ -86,7 +91,7 @@ BEGIN
 COMMIT
 ROLLBACK
 
-Transactions use memory-efficient undo logs to restore previous database states.
+Transactions use undo logs to restore previous database states.
 
 🧠 Markov Chain Predictive Cache
 
@@ -108,10 +113,6 @@ The system learns transitions:
 A → B : 2
 A → C : 1
 
-Therefore:
-
-Prediction after A → B
-
 The predictive cache uses a First-Order Markov Chain.
 
 When transition frequencies are equal, alphabetical ordering provides deterministic tie-breaking.
@@ -127,7 +128,7 @@ The snapshot stores:
 Database values
 Markov Chain transitions
 
-Example snapshot structure:
+Example snapshot:
 
 {
     "db": {
@@ -341,15 +342,3 @@ B.Tech Computer Science Engineering (AI & ML)
 GitHub: https://github.com/adityapandereio6-sketch
 
 ⭐ If you found this project interesting, consider giving the repository a star!
-
-
-## Important
-
-After pasting it:
-
-1. Scroll down.
-2. Click **Commit changes**.
-3. Keep the commit message simple:
-
-```text
-Add comprehensive SpreeDB documentation
