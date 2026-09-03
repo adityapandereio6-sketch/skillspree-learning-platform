@@ -9,8 +9,8 @@ from spreedb import SpreeDB
 # =============================================================================
 
 st.set_page_config(
-    page_title="SpreeDB | Interactive Database",
-    page_icon="🗄️",
+    page_title="NEXA Triage | Operations Console",
+    page_icon="🛡️",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -22,86 +22,145 @@ st.set_page_config(
 
 st.markdown(
     """
-    <style>
+<style>
 
-    .stApp {
-        background: radial-gradient(
-            circle at 50% 0%,
-            #172554 0%,
-            #020617 55%
+.stApp {
+    background:
+        radial-gradient(circle at 80% 0%, #172554 0%, transparent 35%),
+        radial-gradient(circle at 10% 20%, #0f172a 0%, transparent 40%),
+        #020617;
+}
+
+/* Remove excessive top spacing */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background: #0b1120;
+    border-right: 1px solid rgba(255,255,255,0.08);
+}
+
+.sidebar-brand {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
+
+.sidebar-subtitle {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* Hero */
+.hero {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15,23,42,0.96),
+            rgba(15,23,42,0.72)
         );
-    }
+    border: 1px solid rgba(96,165,250,0.20);
+    border-radius: 22px;
+    padding: 42px 32px;
+    text-align: center;
+    margin-bottom: 26px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
 
-    .hero {
-        background: rgba(15, 23, 42, 0.75);
-        border: 1px solid rgba(255,255,255,0.10);
-        border-radius: 20px;
-        padding: 32px;
-        text-align: center;
-        margin-bottom: 25px;
-    }
+.hero-title {
+    font-size: 3rem;
+    font-weight: 850;
+    letter-spacing: -1px;
+    background: linear-gradient(
+        90deg,
+        #60a5fa,
+        #22d3ee,
+        #a78bfa
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-    .hero-title {
-        font-size: 3rem;
-        font-weight: 800;
-        background: linear-gradient(
-            90deg,
-            #60a5fa,
-            #22d3ee,
-            #a78bfa
-        );
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+.hero-subtitle {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    margin-top: 12px;
+}
 
-    .hero-subtitle {
-        color: #94a3b8;
-        font-size: 1.05rem;
-        margin-top: 10px;
-    }
+/* Section headings */
+.section-title {
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: #f8fafc;
+    margin-bottom: 4px;
+}
 
-    .card {
-        background: rgba(15, 23, 42, 0.75);
-        border: 1px solid rgba(255,255,255,0.10);
-        border-radius: 15px;
-        padding: 20px;
-        margin-bottom: 15px;
-    }
+.section-description {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 18px;
+}
 
-    .metric-label {
-        color: #94a3b8;
-        font-size: 0.8rem;
-        text-transform: uppercase;
-        font-weight: 700;
-    }
+/* Cards */
+.panel {
+    background: rgba(15,23,42,0.72);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 22px;
+    margin-bottom: 18px;
+}
 
-    .metric-value {
-        color: #f8fafc;
-        font-size: 1.6rem;
-        font-weight: 800;
-        margin-top: 6px;
-    }
+/* Status pills */
+.status-active {
+    background: rgba(16,185,129,0.15);
+    color: #6ee7b7;
+    border: 1px solid rgba(16,185,129,0.25);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    display: inline-block;
+}
 
-    .status-active {
-        background: #065f46;
-        color: white;
-        padding: 6px 14px;
-        border-radius: 999px;
-        font-weight: 700;
-        display: inline-block;
-    }
+.status-idle {
+    background: rgba(100,116,139,0.15);
+    color: #cbd5e1;
+    border: 1px solid rgba(148,163,184,0.20);
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-weight: 700;
+    display: inline-block;
+}
 
-    .status-idle {
-        background: #334155;
-        color: white;
-        padding: 6px 14px;
-        border-radius: 999px;
-        font-weight: 700;
-        display: inline-block;
-    }
+/* Operational labels */
+.signal-label {
+    color: #64748b;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
 
-    </style>
-    """,
+.signal-value {
+    color: #f8fafc;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin-top: 4px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    color: #64748b;
+    font-size: 0.8rem;
+    padding: 12px;
+}
+
+</style>
+""",
     unsafe_allow_html=True,
 )
 
@@ -121,20 +180,25 @@ db = st.session_state.db
 # =============================================================================
 
 def database_dataframe():
-    """Convert database dictionary into a DataFrame."""
+    """Convert database contents into a DataFrame."""
+
     if not db.db:
         return pd.DataFrame(columns=["Key", "Value"])
 
     return pd.DataFrame(
         [
-            {"Key": key, "Value": value}
+            {
+                "Key": key,
+                "Value": value,
+            }
             for key, value in db.db.items()
         ]
     )
 
 
 def transition_dataframe():
-    """Convert Markov transitions into a DataFrame."""
+    """Convert Markov transition telemetry into a DataFrame."""
+
     rows = []
 
     for source, destinations in db.cache.transitions.items():
@@ -154,7 +218,10 @@ def transition_dataframe():
                     "From Key": source,
                     "To Key": destination,
                     "Transitions": count,
-                    "Probability (%)": round(probability, 1),
+                    "Probability (%)": round(
+                        probability,
+                        1,
+                    ),
                 }
             )
 
@@ -167,18 +234,25 @@ def transition_dataframe():
 
 with st.sidebar:
 
-    st.title("🗄️ SpreeDB")
+    st.markdown(
+        """
+<div class="sidebar-brand">
+🛡️ NEXA TRIAGE
+</div>
 
-    st.caption(
-        "Interactive in-memory database engine"
+<div class="sidebar-subtitle">
+Operational Intelligence Console
+</div>
+        """,
+        unsafe_allow_html=True,
     )
 
     st.divider()
 
-    st.subheader("📊 Database Statistics")
+    st.markdown("### 📡 System Telemetry")
 
     st.metric(
-        "Stored Keys",
+        "Active Records",
         len(db.db),
     )
 
@@ -193,38 +267,42 @@ with st.sidebar:
     )
 
     st.metric(
-        "Markov States",
+        "Learned Access States",
         len(db.cache.transitions),
     )
 
     st.divider()
 
-    st.subheader("🔄 Transaction Status")
+    st.markdown("### 🔐 Transaction Status")
 
     if db.transaction_stack:
 
         st.markdown(
-            '<span class="status-active">ACTIVE TRANSACTION</span>',
+            '<span class="status-active">● ACTIVE</span>',
             unsafe_allow_html=True,
         )
 
     else:
 
         st.markdown(
-            '<span class="status-idle">NO ACTIVE TRANSACTION</span>',
+            '<span class="status-idle">● STANDBY</span>',
             unsafe_allow_html=True,
         )
 
     st.divider()
 
     st.caption(
-        "Python • Transactions • "
-        "Predictive Cache • Persistence"
+        "NEXA Triage Operations Console"
+    )
+
+    st.caption(
+        "Operational state powered by "
+        "the SpreeDB persistence layer."
     )
 
 
 # =============================================================================
-# HERO HEADER
+# HERO
 # =============================================================================
 
 st.markdown(
@@ -233,6 +311,7 @@ st.markdown(
 <div class="hero-title">
 NEXA TRIAGE OPERATIONAL CONTROL
 </div>
+
 <div class="hero-subtitle">
 Deterministic RAG Routing •
 Local Llama 3 Grounding •
@@ -243,49 +322,82 @@ Regex Risk Engine
     unsafe_allow_html=True,
 )
 
+
 # =============================================================================
-# TOP METRICS
+# SYSTEM OVERVIEW
 # =============================================================================
+
+st.markdown(
+    """
+<div class="section-title">
+📡 Operational Overview
+</div>
+
+<div class="section-description">
+Current runtime state and internal intelligence telemetry.
+</div>
+    """,
+    unsafe_allow_html=True,
+)
 
 m1, m2, m3, m4 = st.columns(4)
 
-m1.metric(
-    "🗄️ Keys",
-    len(db.db),
-)
+with m1:
+    st.metric(
+        "🗂️ Records",
+        len(db.db),
+    )
 
-m2.metric(
-    "🔢 Unique Values",
-    len(db.value_counts),
-)
+with m2:
+    st.metric(
+        "🔢 Unique Values",
+        len(db.value_counts),
+    )
 
-m3.metric(
-    "🔄 Transactions",
-    len(db.transaction_stack),
-)
+with m3:
+    st.metric(
+        "🔄 Transactions",
+        len(db.transaction_stack),
+    )
 
-m4.metric(
-    "🧠 Cache States",
-    len(db.cache.transitions),
-)
+with m4:
+    st.metric(
+        "🧠 Learned States",
+        len(db.cache.transitions),
+    )
 
 
 st.divider()
 
 
 # =============================================================================
-# DATABASE OPERATIONS
+# OPERATIONAL CONTROL
 # =============================================================================
 
-left, right = st.columns([1, 1.2])
+left, right = st.columns([0.9, 1.1])
 
+
+# =============================================================================
+# LEFT — CONTROL CENTER
+# =============================================================================
 
 with left:
 
-    st.subheader("⚡ Database Operations")
+    st.markdown(
+        """
+<div class="section-title">
+⚡ Control Center
+</div>
+
+<div class="section-description">
+Execute deterministic data operations against the active runtime state.
+</div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     operation = st.selectbox(
-        "Select Operation",
+        "Operation",
         [
             "SET",
             "GET",
@@ -302,19 +414,19 @@ with left:
     if operation == "SET":
 
         key = st.text_input(
-            "Key",
-            placeholder="username",
+            "Record Key",
+            placeholder="customer_id",
             key="set_key",
         )
 
         value = st.text_input(
-            "Value",
-            placeholder="Aditya",
+            "Record Value",
+            placeholder="priority",
             key="set_value",
         )
 
         if st.button(
-            "💾 Execute SET",
+            "💾 WRITE RECORD",
             use_container_width=True,
         ):
 
@@ -326,13 +438,14 @@ with left:
                 )
 
                 st.success(
-                    f"SET successful → {key} = {value}"
+                    f"Record written successfully: "
+                    f"{key.strip()}"
                 )
 
             else:
 
                 st.error(
-                    "Please enter a key."
+                    "A record key is required."
                 )
 
 
@@ -343,49 +456,51 @@ with left:
     elif operation == "GET":
 
         key = st.text_input(
-            "Key",
-            placeholder="username",
+            "Record Key",
+            placeholder="customer_id",
             key="get_key",
         )
 
         if st.button(
-            "🔍 Execute GET",
+            "🔍 READ RECORD",
             use_container_width=True,
         ):
 
             if key.strip():
 
+                clean_key = key.strip()
+
                 value = db.get(
-                    key.strip()
+                    clean_key
                 )
 
                 if value is None:
 
                     st.warning(
-                        "(nil) — Key not found"
+                        "No record found for this key."
                     )
 
                 else:
 
                     st.success(
-                        f"Value → {value}"
+                        f"Resolved value → {value}"
                     )
 
                 prediction = db.cache.predict(
-                    key.strip()
+                    clean_key
                 )
 
                 if prediction:
 
                     st.info(
-                        f"🧠 Predictive Cache: "
-                        f"Next likely key → '{prediction}'"
+                        f"🧠 Access prediction → "
+                        f"'{prediction}'"
                     )
 
             else:
 
                 st.error(
-                    "Please enter a key."
+                    "A record key is required."
                 )
 
 
@@ -396,13 +511,13 @@ with left:
     elif operation == "UNSET":
 
         key = st.text_input(
-            "Key",
-            placeholder="username",
+            "Record Key",
+            placeholder="customer_id",
             key="unset_key",
         )
 
         if st.button(
-            "🗑️ Execute UNSET",
+            "🗑️ REMOVE RECORD",
             use_container_width=True,
         ):
 
@@ -413,13 +528,13 @@ with left:
                 )
 
                 st.success(
-                    f"UNSET completed → {key}"
+                    f"Record removed: {key.strip()}"
                 )
 
             else:
 
                 st.error(
-                    "Please enter a key."
+                    "A record key is required."
                 )
 
 
@@ -430,13 +545,13 @@ with left:
     elif operation == "COUNT":
 
         value = st.text_input(
-            "Value to Count",
-            placeholder="developer",
+            "Value",
+            placeholder="high_priority",
             key="count_value",
         )
 
         if st.button(
-            "🔢 Execute COUNT",
+            "🔢 COUNT MATCHES",
             use_container_width=True,
         ):
 
@@ -445,24 +560,35 @@ with left:
             )
 
             st.success(
-                f"COUNT('{value}') → {count}"
+                f"Matching records → {count}"
             )
 
 
 # =============================================================================
-# DATABASE STATE
+# RIGHT — LIVE STATE
 # =============================================================================
 
 with right:
 
-    st.subheader("📊 Live Database State")
+    st.markdown(
+        """
+<div class="section-title">
+📊 Live Operational State
+</div>
+
+<div class="section-description">
+Current contents of the active in-memory state.
+</div>
+        """,
+        unsafe_allow_html=True,
+    )
 
     df = database_dataframe()
 
     if df.empty:
 
         st.info(
-            "Database is currently empty."
+            "Runtime state is currently empty."
         )
 
     else:
@@ -473,10 +599,17 @@ with right:
             hide_index=True,
         )
 
-    st.divider()
+    st.markdown(
+        """
+<div class="section-title">
+📈 Value Frequency Index
+</div>
 
-    st.subheader(
-        "📈 O(1) Value Frequency Index"
+<div class="section-description">
+O(1) frequency lookup maintained by the database engine.
+</div>
+        """,
+        unsafe_allow_html=True,
     )
 
     if db.value_counts:
@@ -501,7 +634,7 @@ with right:
     else:
 
         st.info(
-            "No value frequencies yet."
+            "No indexed values available."
         )
 
 
@@ -512,8 +645,17 @@ st.divider()
 # TRANSACTION CONTROL
 # =============================================================================
 
-st.subheader(
-    "🔄 Nested Transaction Control"
+st.markdown(
+    """
+<div class="section-title">
+🔄 Transaction Control
+</div>
+
+<div class="section-description">
+Manage nested state changes using BEGIN, COMMIT and ROLLBACK semantics.
+</div>
+    """,
+    unsafe_allow_html=True,
 )
 
 t1, t2, t3 = st.columns(3)
@@ -529,9 +671,11 @@ with t1:
         db.begin()
 
         st.success(
-            f"Transaction started "
-            f"(Level {len(db.transaction_stack)})"
+            f"Transaction level "
+            f"{len(db.transaction_stack)} started."
         )
+
+        st.rerun()
 
 
 with t2:
@@ -546,13 +690,15 @@ with t2:
             db.commit()
 
             st.success(
-                "Transaction committed successfully."
+                "Transaction committed."
             )
+
+            st.rerun()
 
         except ValueError:
 
             st.error(
-                "NO ACTIVE TRANSACTION"
+                "No active transaction."
             )
 
 
@@ -571,10 +717,12 @@ with t3:
                 "Transaction rolled back."
             )
 
+            st.rerun()
+
         except ValueError:
 
             st.error(
-                "NO ACTIVE TRANSACTION"
+                "No active transaction."
             )
 
 
@@ -582,11 +730,20 @@ st.divider()
 
 
 # =============================================================================
-# MARKOV CACHE TELEMETRY
+# ACCESS PATTERN INTELLIGENCE
 # =============================================================================
 
-st.subheader(
-    "🧠 Markov Chain Predictive Cache Telemetry"
+st.markdown(
+    """
+<div class="section-title">
+🧠 Access Pattern Intelligence
+</div>
+
+<div class="section-description">
+Markov-chain telemetry learned from sequential record retrieval.
+</div>
+    """,
+    unsafe_allow_html=True,
 )
 
 transition_df = transition_dataframe()
@@ -595,7 +752,7 @@ if transition_df.empty:
 
     st.info(
         "No access transitions recorded yet. "
-        "Perform multiple GET operations to train the predictive cache."
+        "Execute multiple READ operations to generate telemetry."
     )
 
 else:
@@ -607,8 +764,8 @@ else:
     )
 
     st.caption(
-        "The predictive cache learns sequential GET access patterns "
-        "and recommends the most probable next key."
+        "The predictive cache records sequential GET access "
+        "patterns and identifies the most probable next key."
     )
 
 
@@ -616,63 +773,67 @@ st.divider()
 
 
 # =============================================================================
-# DEMO SCENARIO
+# DEMONSTRATION / SYSTEM TEST
 # =============================================================================
 
-st.subheader(
-    "🧪 Run Demonstration Scenario"
-)
+st.markdown(
+    """
+<div class="section-title">
+🧪 System Demonstration
+</div>
 
-st.write(
-    "Automatically populate the database and train "
-    "the Markov Chain predictive cache."
+<div class="section-description">
+Populate a controlled test scenario and demonstrate the predictive runtime.
+</div>
+    """,
+    unsafe_allow_html=True,
 )
 
 
 if st.button(
-    "🚀 Run SpreeDB Demo",
+    "🚀 RUN SYSTEM DEMO",
     use_container_width=True,
 ):
 
-    # Reset database
+    # Reset runtime
 
     st.session_state.db = SpreeDB()
 
     db = st.session_state.db
 
 
-    # Populate database
+    # Populate controlled records
 
     db.set(
-        "alice",
-        "developer",
+        "customer_alpha",
+        "high_priority",
     )
 
     db.set(
-        "bob",
-        "developer",
+        "customer_beta",
+        "normal_priority",
     )
 
     db.set(
-        "charlie",
-        "manager",
+        "customer_gamma",
+        "high_priority",
     )
 
 
-    # Train predictive cache
+    # Generate access-pattern telemetry
 
-    db.get("alice")
-    db.get("bob")
+    db.get("customer_alpha")
+    db.get("customer_beta")
 
-    db.get("alice")
-    db.get("bob")
+    db.get("customer_alpha")
+    db.get("customer_beta")
 
-    db.get("alice")
-    db.get("charlie")
+    db.get("customer_alpha")
+    db.get("customer_gamma")
 
 
     st.success(
-        "Demo completed successfully!"
+        "System demonstration completed."
     )
 
     st.rerun()
@@ -684,8 +845,13 @@ if st.button(
 
 st.divider()
 
-st.caption(
-    "SpreeDB • Python In-Memory Database • "
-    "Nested Transactions • O(1) Frequency Index • "
-    "Markov Predictive Cache"
+st.markdown(
+    """
+<div class="footer">
+NEXA TRIAGE • Operational Intelligence Console
+<br>
+Deterministic Routing • Local Grounding • Risk Analysis
+</div>
+    """,
+    unsafe_allow_html=True,
 )
