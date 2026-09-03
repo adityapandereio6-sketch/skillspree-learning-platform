@@ -229,19 +229,19 @@ with st.sidebar:
 
 st.markdown(
     """
-    <div class="hero">
+<div class="hero">
 
-        <div class="hero-title">
-            NEXA TRIAGE OPERATIONAL CONTROL
-        </div>
-
-        <div class="hero-subtitle">
-            Deterministic RAG Routing •
-            Local Llama 3 Grounding •
-            Regex Risk Engine
-        </div>
-
+    <div class="hero-title">
+        NEXA TRIAGE OPERATIONAL CONTROL
     </div>
+
+    <div class="hero-subtitle">
+        Deterministic RAG Routing •
+        Local Llama 3 Grounding •
+        Regex Risk Engine
+    </div>
+
+</div>
     """,
     unsafe_allow_html=True,
 )
